@@ -9,8 +9,9 @@ HARDWARE NOTE: Anodes driven direct from pins 7, 6, 5 .....
 */
 
 // LED
-byte anodePin   = 12; // D12 
-byte cathodePin = 14; // A0
+byte indicatorPin = 2; // D2 
+byte anodePin     = 12; // D12 
+byte cathodePin   = 14; // A0
 
 void setup() { 
   //start serial with baud rate 38400
@@ -25,6 +26,11 @@ void loop () {
   int lightLevel;
   
   lightLevel = readLED(anodePin, cathodePin);
+  if (lightLevel > 800)  
+    digitalWrite(indicatorPin, HIGH);  // Turn ON LED
+  else
+    digitalWrite(indicatorPin, LOW);  // Turn OFF LED
+  
   Serial.println(lightLevel, DEC);
 }
 
@@ -33,6 +39,7 @@ void setupLED(byte anodePin, byte cathodePin) {
   pinMode(anodePin, OUTPUT);   // declare the anode pins as outputs
   pinMode(cathodePin, OUTPUT);    // Enable cathode pins as outputs
   digitalWrite(cathodePin, LOW);  // Turn ON LED
+  pinMode(indicatorPin, OUTPUT);    
 }
 
 int readLED(byte anodePin, byte cathodePin) {
